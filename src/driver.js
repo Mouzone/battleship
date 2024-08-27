@@ -37,9 +37,11 @@ function aiTurn() {
     updateBoard(players[player2])
     if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
+        removeInteractivity()
+    } else {
+        player1 = player2
+        nextTurn()
     }
-    player1 = player2
-    nextTurn()
 }
 
 function playerTurn() {
@@ -61,10 +63,11 @@ function cell_interactivity(event) {
 
     if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
+        removeInteractivity()
+    } else {
+        player1 = player2
+        nextTurn()
     }
-
-    player1 = player2
-    nextTurn()
 }
 
 function removeInteractivity() {
