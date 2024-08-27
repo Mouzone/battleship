@@ -1,0 +1,30 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#board {
+    height: 600px;
+    width: 600px;
+    display: grid;
+    align-self: center;
+    grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+}
+
+.cell {
+    border: 1px solid black;
+    height: 1fr;
+    width: 1fr;
+}
+
+.occupied {
+    background-color: black;
+}

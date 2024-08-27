@@ -25,3 +25,20 @@ function populateBoardPlacer(ships, positions, board){
         })
     }
 }
+
+export function renderBoard(player) {
+    const board = player.gameboard.board
+    const board_element = document.getElementById("board")
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[0].length; j++) {
+            const cell = document.createElement("div")
+            cell.classList.add("cell")
+            cell.dataset.row = `${i}`
+            cell.dataset.col = `${j}`
+            if (board[i][j]) {
+                cell.classList.add("occupied")
+            }
+            board_element.appendChild(cell)
+        }
+    }
+}
