@@ -10,6 +10,7 @@ test("if gameboard is properly instantiated", () => {
     expect(gameboard.ships).toBe(10)
 })
 
+
 const ship = new Ship(5)
 
 test("if ship is properly placed on gameboard", () => {
@@ -29,12 +30,22 @@ test("if ship is properly placed on gameboard", () => {
 })
 
 test("if hit is properly received", () => {
-    let hits = 0
-    coordinates.forEach(([x, y]) => {
-        gameboard.receiveAttack(x, y)
+    let hits = 1
+    for (let i = 0; i < 5; i++){
+        gameboard.receiveAttack(0, i)
         expect(ship.hits).toBe(hits)
         hits++
-    })
+    }
+
+    expect(gameboard.ships).toBe(9)
+})
+
+test("if miss is properly received", () => {
+    gameboard.receiveAttack(0, 6)
+    expect(ship.hits).toBe(5)
+
+    expect(gameboard.missed.length).toBe(1)
+    expect(gameboard.missed).toContainEqual([0, 6])
 })
 
 test("if sink is properly received", () => {
