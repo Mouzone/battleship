@@ -2,7 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: ['./src/driver.js', './src/driver.helper.js', './src/gameboard.js',
+        './src/player.js', './src/ship.js'],
     watch: true,
     plugins: [
         new HtmlWebpackPlugin({
@@ -11,7 +12,7 @@ module.exports = {
         }),
     ],
     output: {
-        filename: 'main.js',
+        filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
