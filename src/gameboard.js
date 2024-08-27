@@ -22,4 +22,8 @@ export class Gameboard {
             this.missed.push([x, y])
         }
     }
+
+    checkShipsLeft() {
+        return this.ships
+    }
 }
