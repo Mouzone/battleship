@@ -9,11 +9,13 @@ body {
     width: 100vw;
     display: flex;
     justify-content: center;
+    gap: 100px;
 }
 
-#board {
-    height: 600px;
-    width: 600px;
+#board,
+#guess-board {
+    height: 500px;
+    width: 500px;
     display: grid;
     align-self: center;
     grid-template: repeat(10, 1fr) / repeat(10, 1fr);
