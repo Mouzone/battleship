@@ -28,5 +28,15 @@ body {
 }
 
 .occupied {
-    background-color: black;
+    background-color: lightpink;
+    border: 3px solid hotpink;
+}
+
+.hit {
+    background-color: lightsalmon;
+    border: none;
+}
+
+.miss {
+    background-color: gray;
 }

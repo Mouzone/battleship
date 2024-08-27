@@ -4,7 +4,9 @@ export class Gameboard {
         this.board = Array.from({ length: 10 }, () =>
                         Array(10)
                             .fill(null))
-        this.missed = []
+        // store hit and ships on board
+        // store misses in this.miss array
+        this.miss = []
         this.ships = 10
     }
 
@@ -18,8 +20,11 @@ export class Gameboard {
             if (this.board[x][y].isSunk()) {
                 this.ships--
             }
+            this.board[x][y] = HIT
+            return true
         } else {
-            this.missed.push([x, y])
+            this.board[x][y] = MISS
+            return false
         }
     }
 
@@ -27,3 +32,6 @@ export class Gameboard {
         return this.ships
     }
 }
+
+const HIT = 1
+const MISS = 0
