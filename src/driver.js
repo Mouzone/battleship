@@ -35,7 +35,7 @@ function aiTurn() {
     [row, col] = aiAttack(players[player2])
     players[player2].gameboard.receiveAttack(row, col)
     updateBoard(players[player2])
-    if (!players[player1].gameboard.checkShipsLeft()) {
+    if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
     }
     player1 = player2
@@ -44,7 +44,7 @@ function aiTurn() {
 
 function playerTurn() {
     const guess_board_element = document.getElementById("guess-board")
-    const guess_cells = guess_board_element.querySelectorAll(".cell")
+    const guess_cells = guess_board_element.querySelectorAll(".cell:not([class*=' '])");
     guess_cells.forEach(cell => {
         cell.addEventListener("click", cell_interactivity)
     })
@@ -59,7 +59,7 @@ function cell_interactivity(event) {
 
     updateGuessBoard(players[player2])
 
-    if (!players[player1].gameboard.checkShipsLeft()) {
+    if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
     }
 

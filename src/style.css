@@ -40,3 +40,15 @@ body {
 .miss {
     background-color: gray;
 }
+
+#game-over {
+    position: absolute;
+    display: none;
+    align-self: center;
+    width: 200px;
+    height: 200px;
+    border: 5px solid black;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+}

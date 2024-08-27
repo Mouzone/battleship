@@ -80,8 +80,14 @@ export function updateGuessBoard(player) {
     })
 }
 
-export function endGame() {
-
+export function endGame(player_number) {
+    const end_game = document.getElementById("game-over")
+    end_game.style.display = "block"
+    if (player_number === 0) {
+        end_game.textContent = "Player 1 has won!"
+    } else {
+        end_game.textContent = "Player 2 has won!"
+    }
 }
 
 export function aiAttack(player) {
