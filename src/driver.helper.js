@@ -50,11 +50,15 @@ export function updateBoard(player) {
                 cell.classList.add("occupied")
             } else if (board[i][j] === 1) {
                 cell.classList.add("hit")
-            } else if (board[i][j] === 0) {
-                cell.classList.add("miss")
             }
         }
     }
+    Object.entries(player.gameboard.miss).forEach(([x, set]) => {
+        set.forEach(y => {
+            const cell = board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
+            cell.classList.add("miss")
+        })
+    })
 }
 
 export function updateGuessBoard(player) {
@@ -64,16 +68,36 @@ export function updateGuessBoard(player) {
             const cell = guess_board_element.querySelector(`div[data-row="${i}"][data-col="${j}"]`)
             if (board[i][j] === 1) {
                 cell.classList.add("hit")
-            } else if (board[i][j] === 0) {
-                cell.classList.add("miss")
             }
         }
     }
+
+    Object.entries(player.gameboard.miss).forEach(([x, set]) => {
+        set.forEach(y => {
+            const cell = guess_board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
+            cell.classList.add("miss")
+        })
+    })
 }
 
 export function endGame() {
 
 }
 
+export function aiAttack(player) {
+    let row = Math.floor(Math.random() * 10)
+    let col = Math.floor(Math.random() * 10)
+    while (player.gameboard.board[row][col] === HIT ||
+    (row in player.gameboard.miss && player.gameboard.miss[row].has(col))) {
+
+        row = Math.floor(Math.random() * 10)
+        col = Math.floor(Math.random() * 10)
+    }
+    return [row, col]
+}
+
 const board_element = document.getElementById("board")
 const guess_board_element = document.getElementById("guess-board")
+
+const HIT = 1
+const MISS = 0

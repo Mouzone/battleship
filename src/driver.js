@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {populateBoard, updateBoard, updateGuessBoard, renderGrids, endGame} from "./driver.helper";
+import {populateBoard, updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -7,7 +7,7 @@ const REAL_PLAYER = 1
 
 let player1 = 0
 
-const players = [new Player(REAL_PLAYER), new Player(REAL_PLAYER)]
+const players = [new Player(REAL_PLAYER), new Player(AI_PLAYER)]
 
 function initGame() {
     renderGrids()
@@ -20,26 +20,35 @@ function initGame() {
 }
 
 function turn() {
+    console.log(player1)
+    const player2 = (player1 + 1) % 2
+    if (players[player1].player_type === AI_PLAYER) {
+        let row, col;
+        [row, col] = aiAttack(players[ player2 ])
+        players[player2].gameboard.receiveAttack(row, col)
+        updateBoard(players[ player2 ])
+        if (!players[player1].gameboard.checkShipsLeft()) {
+            endGame(player1)
+        }
+        player1 = player2
+        turn()
 
-    const guess_board_element = document.getElementById("guess-board")
-    const guess_cells = guess_board_element.querySelectorAll(".cell")
-    guess_cells.forEach(cell => {
-        cell.addEventListener("click", event => {
-            const player2 = (player1 + 1) % 2
-            players[player2].gameboard.receiveAttack(cell.dataset.row, cell.dataset.col)
-            updateBoard(players[ player1 ])
-            updateGuessBoard(players[ player2 ])
-            if (!players[player1].gameboard.checkShipsLeft()) {
-                endGame(player1)
-            }
-            player1 = player2
-            // remove interactivity
-            // for ai turn do not switch up boards
-            // for ai turn do not need to iterate through its miss array,
-            // jsut keep the two baords where they are
-            turn()
+    } else {
+        const guess_board_element = document.getElementById("guess-board")
+        const guess_cells = guess_board_element.querySelectorAll(".cell")
+        guess_cells.forEach(cell => {
+            cell.addEventListener("click", event => {
+                players[player2].gameboard.receiveAttack(
+                    parseInt(cell.dataset.row), parseInt(cell.dataset.col))
+                updateGuessBoard(players[player2])
+                if (!players[player1].gameboard.checkShipsLeft()) {
+                    endGame(player1)
+                }
+                player1 = player2
+                turn()
+            })
         })
-    })
+    }
 }
 
 initGame()

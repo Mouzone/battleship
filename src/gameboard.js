@@ -1,12 +1,11 @@
 export class Gameboard {
     // no rotation for now
     constructor() {
+        // only hits and ships
         this.board = Array.from({ length: 10 }, () =>
                         Array(10)
                             .fill(null))
-        // store hit and ships on board
-        // store misses in this.miss array
-        this.miss = []
+        this.miss = {}
         this.ships = 10
     }
 
@@ -23,7 +22,10 @@ export class Gameboard {
             this.board[x][y] = HIT
             return true
         } else {
-            this.board[x][y] = MISS
+            if (!(x in Object.keys(this.miss))) {
+                this.miss[x] = new Set()
+            }
+            this.miss[x].add(y)
             return false
         }
     }
