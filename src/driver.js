@@ -16,39 +16,59 @@ function initGame() {
     })
     updateBoard(players[ player1 ])
     updateGuessBoard(players[ player1 + 1 % 2])
-    turn()
+    nextTurn()
 }
 
-function turn() {
+function nextTurn() {
     console.log(player1)
-    const player2 = (player1 + 1) % 2
     if (players[player1].player_type === AI_PLAYER) {
-        let row, col;
-        [row, col] = aiAttack(players[ player2 ])
-        players[player2].gameboard.receiveAttack(row, col)
-        updateBoard(players[ player2 ])
-        if (!players[player1].gameboard.checkShipsLeft()) {
-            endGame(player1)
-        }
-        player1 = player2
-        turn()
-
-    } else {
         const guess_board_element = document.getElementById("guess-board")
         const guess_cells = guess_board_element.querySelectorAll(".cell")
         guess_cells.forEach(cell => {
-            cell.addEventListener("click", event => {
-                players[player2].gameboard.receiveAttack(
-                    parseInt(cell.dataset.row), parseInt(cell.dataset.col))
-                updateGuessBoard(players[player2])
-                if (!players[player1].gameboard.checkShipsLeft()) {
-                    endGame(player1)
-                }
-                player1 = player2
-                turn()
-            })
+            cell.removeEventListener("click", cell_interactivity)
         })
+        aiTurn()
+    } else {
+        playerTurn()
     }
+}
+
+function aiTurn() {
+    const player2 = (player1 + 1) % 2
+    let row, col;
+    [row, col] = aiAttack(players[player2])
+    players[player2].gameboard.receiveAttack(row, col)
+    updateBoard(players[player2])
+    if (!players[player1].gameboard.checkShipsLeft()) {
+        endGame(player1)
+    }
+    player1 = player2
+    nextTurn()
+}
+
+function playerTurn() {
+    const guess_board_element = document.getElementById("guess-board")
+    const guess_cells = guess_board_element.querySelectorAll(".cell")
+    guess_cells.forEach(cell => {
+        cell.addEventListener("click", cell_interactivity)
+    })
+}
+
+function cell_interactivity(event) {
+    const player2 = (player1 + 1) % 2
+    players[player2].gameboard.receiveAttack(
+        parseInt(event.currentTarget.dataset.row),
+        parseInt(event.currentTarget.dataset.col)
+    )
+
+    updateGuessBoard(players[player2])
+
+    if (!players[player1].gameboard.checkShipsLeft()) {
+        endGame(player1)
+    }
+    
+    player1 = player2
+    nextTurn()
 }
 
 initGame()
