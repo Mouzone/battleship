@@ -22,11 +22,7 @@ function initGame() {
 function nextTurn() {
     console.log(player1)
     if (players[player1].player_type === AI_PLAYER) {
-        const guess_board_element = document.getElementById("guess-board")
-        const guess_cells = guess_board_element.querySelectorAll(".cell")
-        guess_cells.forEach(cell => {
-            cell.removeEventListener("click", cell_interactivity)
-        })
+        removeInteractivity()
         aiTurn()
     } else {
         playerTurn()
@@ -66,9 +62,17 @@ function cell_interactivity(event) {
     if (!players[player1].gameboard.checkShipsLeft()) {
         endGame(player1)
     }
-    
+
     player1 = player2
     nextTurn()
+}
+
+function removeInteractivity() {
+    const guess_board_element = document.getElementById("guess-board")
+    const guess_cells = guess_board_element.querySelectorAll(".cell")
+    guess_cells.forEach(cell => {
+        cell.removeEventListener("click", cell_interactivity)
+    })
 }
 
 initGame()

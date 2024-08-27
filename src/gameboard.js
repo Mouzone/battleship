@@ -22,7 +22,7 @@ export class Gameboard {
             this.board[x][y] = HIT
             return true
         } else {
-            if (!(x in Object.keys(this.miss))) {
+            if (!(x in this.miss)) {
                 this.miss[x] = new Set()
             }
             this.miss[x].add(y)
