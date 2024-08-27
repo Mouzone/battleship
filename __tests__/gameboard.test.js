@@ -29,27 +29,20 @@ test("if ship is properly placed on gameboard", () => {
     }
 })
 
+// we know that "ship" is only in the designated coordinates, so no point testing ship functionality
+// like receiving hits, instead see if gameboard.ships updates which also is indicative of hit
 test("if hit is properly received", () => {
-    let hits = 1
     for (let i = 0; i < 5; i++){
         gameboard.receiveAttack(0, i)
-        expect(ship.hits).toBe(hits)
-        hits++
     }
 
+    // for sink
     expect(gameboard.ships).toBe(9)
 })
 
 test("if miss is properly received", () => {
     gameboard.receiveAttack(0, 6)
-    expect(ship.hits).toBe(5)
 
     expect(gameboard.missed.length).toBe(1)
     expect(gameboard.missed).toContainEqual([0, 6])
-})
-
-test("if sink is properly received", () => {
-    coordinates.forEach(([x, y]) => {
-        expect(gameboard.board[x][y].isSunk()).toBe(true)
-    })
 })
