@@ -34,10 +34,15 @@ body {
     display: grid;
     justify-self: center;
     grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+    border: 2px solid black;
+}
+
+#guess-board {
+    opacity: .7;
 }
 
 .cell {
-    border: 1px solid black;
+    border: 2px solid black;
     height: 1fr;
     width: 1fr;
 }

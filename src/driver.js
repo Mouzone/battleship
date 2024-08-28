@@ -23,7 +23,8 @@ function initGame() {
     })
     const play_button = document.getElementById("play")
     play_button.addEventListener("click", event => {
-        //todo: turn guessboard not opaque
+        const guess_board = document.getElementById("guess-board")
+        guess_board.style.opacity = "1"
         randomize_button.disabled = true
         nextTurn()
     })
