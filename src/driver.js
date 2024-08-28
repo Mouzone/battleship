@@ -44,11 +44,26 @@ function initGame() {
             })
             cell.addEventListener("drop", event => {
                 if (!cell.classList.contains("occupied")) {
-                    // do stuff here
-                    cell.classList.add("occupied")
-                    // here delete the element from ship_element
-                    dragged.draggable = false
-                    ships_element.removeChild(dragged)
+                    const ship_length = parseInt(dragged.dataset.length)
+                    const curr_row = parseInt(cell.dataset.row)
+                    const curr_col = parseInt(cell.dataset.col)
+                    if (dragged.classList.contains("horizontal")){
+                        if (curr_col + ship_length <= 10) {
+                            for (let col = curr_col; col < curr_col + ship_length; col++) {
+                                const cell_to_color = document.querySelector(`div[data-row="${curr_row}"][data-col="${col}"]`)
+                                cell_to_color.classList.add("occupied")
+                            }
+                            ships_element.removeChild(dragged)
+                        }
+                    } else if (dragged.classList.contains("vertical")) {
+                        if (curr_row + ship_length <= 10) {
+                            for (let row = curr_row; row < curr_row + ship_length; row++) {
+                                const cell_to_color = document.querySelector(`div[data-row="${row}"][data-col="${curr_col}"]`)
+                                cell_to_color.classList.add("occupied")
+                            }
+                            ships_element.removeChild(dragged)
+                        }
+                    }
                 }
             })
         })
@@ -63,12 +78,15 @@ function initGame() {
 
     const play_button = document.getElementById("play")
     play_button.addEventListener("click", event => {
+        //todo: check if ships are placed then do rest of the disabling logic
         const guess_board = document.getElementById("guess-board")
         guess_board.style.opacity = "1"
         randomize_button.disabled = true
         manual_gen_button.disabled = true
         play_button.disabled = true
         ships_element.style.display = "none";
+        //todo: if ship_elements has no children, and there are pieces on the board log them onto the board
+        //-- then update boards
         nextTurn()
     })
 }

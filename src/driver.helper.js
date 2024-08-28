@@ -148,9 +148,12 @@ export function fillShipsElement() {
     ships_to_generate.forEach(([num_ships, length]) => {
         for (let i = 0; i < num_ships; i++) {
             const ship_element = document.createElement("div")
+            //todo: add logic here, when inside the "dock" and clicked it will flip into vertical and replace the class "horizontal
+            // -- hardcode heights and widths to .one.horizontal and .one.vertical
             ship_element.classList.add(`${conversion[length]}`)
             ship_element.classList.add("horizontal")
             ship_element.classList.add("ship")
+            ship_element.dataset.length = `${length}`
 
             ship_element.draggable = true
             ships_element.appendChild(ship_element)
