@@ -22,6 +22,7 @@ function initGame() {
 
         updateBoard(players[ player1 ])
         updateGuessBoard(players[ player1 + 1 % 2])
+        play_button.disabled = false
     })
 
     const manual_gen_button = document.getElementById("manual-generate")
@@ -62,6 +63,9 @@ function initGame() {
                                 cell_to_color.classList.add("occupied")
                             }
                             ships_element.removeChild(dragged)
+                            if (!ships_element.children.length) {
+                                play_button.disabled = false
+                            }
                         }
                     }
                 }
@@ -78,15 +82,12 @@ function initGame() {
 
     const play_button = document.getElementById("play")
     play_button.addEventListener("click", event => {
-        //todo: check if ships are placed then do rest of the disabling logic
         const guess_board = document.getElementById("guess-board")
         guess_board.style.opacity = "1"
         randomize_button.disabled = true
         manual_gen_button.disabled = true
         play_button.disabled = true
         ships_element.style.display = "none";
-        // todo: if ship_elements has no children, and there are pieces on the board log them onto the board
-        //-- then update boards
         nextTurn()
     })
 }
