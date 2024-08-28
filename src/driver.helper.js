@@ -144,6 +144,7 @@ export function fillShipsElement() {
         4: "four"
     }
     const ships_element = document.getElementById("ships")
+    ships_element.innerHTML = ""
     ships_to_generate.forEach(([num_ships, length]) => {
         for (let i = 0; i < num_ships; i++) {
             const ship_element = document.createElement("div")

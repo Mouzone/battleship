@@ -12,7 +12,6 @@ const players = [new Player(REAL_PLAYER), new Player(AI_PLAYER)]
 function initGame() {
     renderGrids()
     generateShips(players[(player1+1) % 2])
-    fillShipsElement()
     const ships_element = document.getElementById("ships")
 
     const randomize_button = document.getElementById("generate")
@@ -28,8 +27,9 @@ function initGame() {
     const manual_gen_button = document.getElementById("manual-generate")
 
     manual_gen_button.addEventListener("click", event => {
-        let dragged = null
+        fillShipsElement()
         cleanBoard(players[player1])
+        let dragged = null
         ships_element.style.display = "flex";
         const cells = document.querySelectorAll("#board .cell")
         cells.forEach(cell => {
@@ -48,6 +48,7 @@ function initGame() {
                     cell.classList.add("occupied")
                     // here delete the element from ship_element
                     dragged.draggable = false
+                    ships_element.removeChild(dragged)
                 }
             })
         })
