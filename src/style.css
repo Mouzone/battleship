@@ -21,9 +21,10 @@ body {
     justify-content: start;
 }
 
-button {
-    width: 100px;
-    align-self: center;
+#buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 #board,

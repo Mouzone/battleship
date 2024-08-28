@@ -21,8 +21,12 @@ function initGame() {
         updateGuessBoard(players[ player1 + 1 % 2])
 
     })
-    // play button to start the game and remove randomize_button functionality
-    // nextTurn()
+    const play_button = document.getElementById("play")
+    play_button.addEventListener("click", event => {
+        //todo: turn guessboard not opaque
+        randomize_button.disabled = true
+        nextTurn()
+    })
 }
 
 function nextTurn() {
