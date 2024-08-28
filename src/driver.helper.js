@@ -1,29 +1,64 @@
 import {Ship} from "./ship";
 
-export function populateBoard(player) {
-    // one hit ships
-    const one_hit_ships = [new Ship(1), new Ship(1), new Ship(1), new Ship(1)]
-    const two_hit_ships = [new Ship(2), new Ship(2), new Ship(2)]
-    const three_hit_ships = [new Ship(3), new Ship(3)]
-    const four_hit_ships = [new Ship(4)]
-
-    const one_hit_pos = [[[1, 1]], [[0, 9]], [[7, 4]], [[5,8]]]
-    const two_hit_pos = [[[3, 0], [4, 0]], [[3, 8], [3, 9]], [[7, 6], [7, 7]]]
-    const three_hit_pos = [[[1, 5], [2, 5], [3, 5]], [[9, 6], [9, 7], [9, 8]]]
-    const four_hit_pos = [[[3, 2], [4, 2], [5, 2], [6, 2]]]
-
-    populateBoardPlacer(one_hit_ships, one_hit_pos, player.gameboard.board)
-    populateBoardPlacer(two_hit_ships, two_hit_pos, player.gameboard.board)
-    populateBoardPlacer(three_hit_ships, three_hit_pos, player.gameboard.board)
-    populateBoardPlacer(four_hit_ships, four_hit_pos, player.gameboard.board)
+export function cleanBoard(player) {
+    const occupied_cells = document.querySelectorAll(".occupied")
+    occupied_cells.forEach(cell => {
+        cell.classList.remove("occupied")
+    })
+    player.gameboard.board.forEach(list => list.fill(null))
 }
 
-function populateBoardPlacer(ships, positions, board){
-    for (let i = 0; i < ships.length; i++) {
-        positions[i].forEach(([x, y]) => {
-            board[x][y] = ships[i]
-        })
+export function generateShips(player) {
+    const ships_to_generate = [[4, 1], [3, 2], [2, 3], [1, 4]]
+    ships_to_generate.forEach(([num_ships, length]) => {
+        for (let i = 0; i < num_ships; i++) {
+            let direction = Math.floor(Math.random() * 2)
+            let row = Math.floor(Math.random() * 10)
+            let col = Math.floor(Math.random() * 10)
+            let positions = checkValid(player.gameboard.board, direction, row, col, length)
+            while (positions.length === 0) {
+                direction = Math.floor(Math.random() * 2)
+                row = Math.floor(Math.random() * 10)
+                col = Math.floor(Math.random() * 10)
+                positions = checkValid(player.gameboard.board, direction, row, col, length)
+            }
+
+            populateBoardPlacer(length, positions, player.gameboard.board)
+
+        }
+    })
+}
+
+const HORIZONTAL = 0
+function checkValid(board, direction, row, col, length) {
+    const positions = []
+    let curr_length = length
+    while (row < 10 && col < 10 && curr_length > 0) {
+        if (board[row][col] instanceof Ship) {
+            break
+        }
+        positions.push([row, col])
+        curr_length--
+        if (direction === HORIZONTAL) {
+            col++
+        } else {
+            row++
+        }
     }
+
+    if (positions.length !== length) {
+        return []
+    } else {
+        return positions
+    }
+}
+
+
+function populateBoardPlacer(length, positions, board){
+    const ship = new Ship(length)
+    positions.forEach(([x, y]) => {
+        board[x][y] = ship
+    })
 }
 
 export function renderGrids() {

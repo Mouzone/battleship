@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {populateBoard, updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack} from "./driver.helper";
+import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -11,12 +11,18 @@ const players = [new Player(REAL_PLAYER), new Player(AI_PLAYER)]
 
 function initGame() {
     renderGrids()
-    players.forEach(player => {
-        populateBoard(player)
+    generateShips(players[(player1+1) % 2])
+    const randomize_button = document.getElementById("generate")
+    randomize_button.addEventListener("click", event => {
+        cleanBoard(players[player1])
+        generateShips(players[player1])
+
+        updateBoard(players[ player1 ])
+        updateGuessBoard(players[ player1 + 1 % 2])
+
     })
-    updateBoard(players[ player1 ])
-    updateGuessBoard(players[ player1 + 1 % 2])
-    nextTurn()
+    // play button to start the game and remove randomize_button functionality
+    // nextTurn()
 }
 
 function nextTurn() {
