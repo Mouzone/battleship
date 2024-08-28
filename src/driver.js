@@ -27,18 +27,33 @@ function initGame() {
     const manual_gen_button = document.getElementById("manual-generate")
 
     manual_gen_button.addEventListener("click", event => {
+        let dragged = null
         cleanBoard(players[player1])
         ships_element.style.display = "flex";
-        const cells = document.querySelectorAll("#board > .cell")
+        const cells = document.querySelectorAll("#board .cell")
         cells.forEach(cell => {
+            cell.addEventListener("dragover", event => {
+                // prevent default to allow drop
+                event.preventDefault();
+            })
+            cell.addEventListener("click", event => {
+                if (cell.classList.contains("occupied")) {
+                    event.preventDefault()
+                }
+            })
             cell.addEventListener("drop", event => {
-
+                if (!cell.classList.contains("occupied")) {
+                    // do stuff here
+                    cell.classList.add("occupied")
+                    dragged.draggable = false
+                }
             })
         })
+
         const ships_elements = document.querySelectorAll(".ship")
         ships_elements.forEach(ship_element => {
             ship_element.addEventListener("drag", event => {
-
+                dragged = ship_element
             })
         })
     })
