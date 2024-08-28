@@ -53,7 +53,7 @@ function checkValid(board, direction, row, col, length) {
 }
 
 
-function populateBoardPlacer(length, positions, board){
+export function populateBoardPlacer(length, positions, board){
     const ship = new Ship(length)
     positions.forEach(([x, y]) => {
         board[x][y] = ship
@@ -164,13 +164,6 @@ export function fillShipsElement() {
                 }
             })
         }
-    })
-}
-
-export function manualSetBoard(player, length, positions) {
-    const ship = new Ship(length)
-    positions.forEach(([x, y]) => {
-        player.gameboard.board[x][y] = ship
     })
 }
 

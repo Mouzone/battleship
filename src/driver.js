@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement, manualSetBoard} from "./driver.helper";
+import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement, populateBoardPlacer} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -57,7 +57,7 @@ function initGame() {
                                 cell_to_color.classList.add("occupied")
                             }
                             ships_element.removeChild(dragged)
-                            manualSetBoard(players[player1], ship_length, positions)
+                            populateBoardPlacer(ship_length, positions, players[player1].gameboard.board)
                         }
                     } else if (dragged.classList.contains("vertical")) {
                         if (curr_row + ship_length <= 10) {
@@ -67,7 +67,7 @@ function initGame() {
                                 cell_to_color.classList.add("occupied")
                             }
                             ships_element.removeChild(dragged)
-                            manualSetBoard(players[player1], ship_length, positions)
+                            populateBoardPlacer(ship_length, positions, players[player1].gameboard.board)
                         }
                     }
 
