@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard} from "./driver.helper";
+import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -12,20 +12,45 @@ const players = [new Player(REAL_PLAYER), new Player(AI_PLAYER)]
 function initGame() {
     renderGrids()
     generateShips(players[(player1+1) % 2])
+    const ships_element = document.getElementById("ships")
+
     const randomize_button = document.getElementById("generate")
     randomize_button.addEventListener("click", event => {
+        ships_element.style.display = "none";
         cleanBoard(players[player1])
         generateShips(players[player1])
 
         updateBoard(players[ player1 ])
         updateGuessBoard(players[ player1 + 1 % 2])
-
     })
+
+    const manual_gen_button = document.getElementById("manual-generate")
+
+    manual_gen_button.addEventListener("click", event => {
+        cleanBoard(players[player1])
+        ships_element.style.display = "flex";
+        const cells = document.querySelectorAll("#board > .cell")
+        cells.forEach(cell => {
+            cell.addEventListener("drop", event => {
+
+            })
+        })
+        const ships_elements = document.querySelectorAll(".ship")
+        ships_elements.forEach(ship_element => {
+            ship_element.addEventListener("drag", event => {
+
+            })
+        })
+    })
+
     const play_button = document.getElementById("play")
     play_button.addEventListener("click", event => {
         const guess_board = document.getElementById("guess-board")
         guess_board.style.opacity = "1"
         randomize_button.disabled = true
+        manual_gen_button.disabled = true
+        play_button.disabled = true
+        ships_element.style.display = "none";
         nextTurn()
     })
 }
