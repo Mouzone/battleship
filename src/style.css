@@ -59,27 +59,21 @@ body {
 }
 
 .occupied,
-.one.ship,
-.two.ship,
-.three.ship,
-.fourth.ship {
+.one,
+.two,
+.three,
+.fourth {
     background-color: lightpink;
     border: 3px solid hotpink;
 }
 
-.one.ship,
-.two.ship,
-.three.ship,
-.fourth.ship {
+.one,
+.two,
+.three,
+.fourth {
     flex: 0 0 auto;
     display: inline-block;
     height: 50px;
-}
-
-.ship-container {
-    display: none;
-    border: 3px dashed hotpink;
-    background-color: white;
 }
 
 .one {

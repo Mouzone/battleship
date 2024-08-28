@@ -9,7 +9,6 @@ export function cleanBoard(player) {
 }
 
 export function generateShips(player) {
-    const ships_to_generate = [[4, 1], [3, 2], [2, 3], [1, 4]]
     ships_to_generate.forEach(([num_ships, length]) => {
         for (let i = 0; i < num_ships; i++) {
             let direction = Math.floor(Math.random() * 2)
@@ -137,6 +136,27 @@ export function aiAttack(player) {
     return [row, col]
 }
 
+export function fillShipsElement() {
+    const conversion = {
+        1: "one",
+        2: "two",
+        3: "three",
+        4: "four"
+    }
+    const ships_element = document.getElementById("ships")
+    ships_to_generate.forEach(([num_ships, length]) => {
+        for (let i = 0; i < num_ships; i++) {
+            const ship_element = document.createElement("div")
+            ship_element.classList.add(`${conversion[length]}`)
+            ship_element.classList.add("horizontal")
+            ship_element.classList.add("ship")
+
+            ship_element.draggable = true
+            ships_element.appendChild(ship_element)
+        }
+    })
+}
+const ships_to_generate = [[4, 1], [3, 2], [2, 3], [1, 4]]
 const board_element = document.getElementById("board")
 const guess_board_element = document.getElementById("guess-board")
 

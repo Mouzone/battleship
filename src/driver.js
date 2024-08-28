@@ -12,6 +12,7 @@ const players = [new Player(REAL_PLAYER), new Player(AI_PLAYER)]
 function initGame() {
     renderGrids()
     generateShips(players[(player1+1) % 2])
+    fillShipsElement()
     const ships_element = document.getElementById("ships")
 
     const randomize_button = document.getElementById("generate")
@@ -45,6 +46,7 @@ function initGame() {
                 if (!cell.classList.contains("occupied")) {
                     // do stuff here
                     cell.classList.add("occupied")
+                    // here delete the element from ship_element
                     dragged.draggable = false
                 }
             })
