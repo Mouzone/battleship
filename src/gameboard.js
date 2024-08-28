@@ -5,7 +5,7 @@ export class Gameboard {
         this.board = Array.from({ length: 10 }, () =>
                         Array(10)
                             .fill(null))
-        this.miss = {}
+        this.miss = new Set()
         this.ships = 10
     }
 
@@ -22,10 +22,7 @@ export class Gameboard {
             this.board[x][y] = HIT
             return true
         } else {
-            if (!(x in this.miss)) {
-                this.miss[x] = new Set()
-            }
-            this.miss[x].add(y)
+            this.miss.add(`${x},${y}`)
             return false
         }
     }

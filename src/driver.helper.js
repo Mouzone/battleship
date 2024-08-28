@@ -87,11 +87,11 @@ export function updateBoard(player) {
             }
         }
     }
-    Object.entries(player.gameboard.miss).forEach(([x, set]) => {
-        set.forEach(y => {
-            const cell = board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
-            cell.classList.add("miss")
-        })
+    player.gameboard.miss.forEach(coordinates => {
+        let x, y
+        [x, y] = coordinates.split(",")
+        const cell = board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
+        cell.classList.add("miss")
     })
 }
 
@@ -106,11 +106,11 @@ export function updateGuessBoard(player) {
         }
     }
 
-    Object.entries(player.gameboard.miss).forEach(([x, set]) => {
-        set.forEach(y => {
-            const cell = guess_board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
-            cell.classList.add("miss")
-        })
+    player.gameboard.miss.forEach(coordinates => {
+        let x, y
+        [x, y] = coordinates.split(",")
+        const cell = guess_board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
+        cell.classList.add("miss")
     })
 }
 
@@ -128,7 +128,7 @@ export function aiAttack(player) {
     let row = Math.floor(Math.random() * 10)
     let col = Math.floor(Math.random() * 10)
     while (player.gameboard.board[row][col] === HIT ||
-    (row in player.gameboard.miss && player.gameboard.miss[row].has(col))) {
+        player.gameboard.miss.has(`${row},${col}`)) {
 
         row = Math.floor(Math.random() * 10)
         col = Math.floor(Math.random() * 10)
