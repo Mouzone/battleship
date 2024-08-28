@@ -20,7 +20,6 @@ function initGame() {
 }
 
 function nextTurn() {
-    console.log(player1)
     if (players[player1].player_type === AI_PLAYER) {
         removeInteractivity()
         aiTurn()

@@ -9,7 +9,21 @@ body {
     width: 100vw;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 100px;
+}
+
+.container {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: start;
+}
+
+button {
+    width: 100px;
+    align-self: center;
 }
 
 #board,
@@ -17,7 +31,7 @@ body {
     height: 500px;
     width: 500px;
     display: grid;
-    align-self: center;
+    justify-self: center;
     grid-template: repeat(10, 1fr) / repeat(10, 1fr);
 }
 
@@ -44,6 +58,7 @@ body {
 #game-over {
     position: absolute;
     display: none;
+
     align-self: center;
     width: 200px;
     height: 200px;
