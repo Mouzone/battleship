@@ -38,14 +38,14 @@ body {
 }
 
 #ships {
-    height: 70px;
+    height: 260px;
     width: 450px;
     gap: 20px;
 
     display: none;
     overflow-x: auto;
     white-space: nowrap;
-    margin: 20px;
+    align-items: center;
 }
 
 #guess-board {
@@ -76,20 +76,44 @@ body {
     height: 50px;
 }
 
-.one {
+.one.horizontal {
+    height: 50px;
     width: 50px;
 }
 
-.two {
+.two.horizontal {
+    height: 50px;
     width: 100px;
 }
 
-.three {
+.three.horizontal {
+    height: 50px;
     width: 150px;
 }
 
-.four {
+.four.horizontal {
+    height: 50px;
     width: 200px;
+}
+
+.one.vertical {
+    height: 50px;
+    width: 50px;
+}
+
+.two.vertical {
+    height: 100px;
+    width: 50px;
+}
+
+.three.vertical {
+    height: 150px;
+    width: 50px;
+}
+
+.four.vertical {
+    height: 200px;
+    width: 50px;
 }
 
 .hit {

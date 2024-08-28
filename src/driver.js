@@ -85,7 +85,7 @@ function initGame() {
         manual_gen_button.disabled = true
         play_button.disabled = true
         ships_element.style.display = "none";
-        //todo: if ship_elements has no children, and there are pieces on the board log them onto the board
+        // todo: if ship_elements has no children, and there are pieces on the board log them onto the board
         //-- then update boards
         nextTurn()
     })
