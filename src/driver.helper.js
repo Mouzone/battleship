@@ -166,6 +166,14 @@ export function fillShipsElement() {
         }
     })
 }
+
+export function manualSetBoard(player, length, positions) {
+    const ship = new Ship(length)
+    positions.forEach(([x, y]) => {
+        player.gameboard.board[x][y] = ship
+    })
+}
+
 const ships_to_generate = [[4, 1], [3, 2], [2, 3], [1, 4]]
 const board_element = document.getElementById("board")
 const guess_board_element = document.getElementById("guess-board")

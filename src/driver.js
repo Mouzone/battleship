@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement} from "./driver.helper";
+import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement, manualSetBoard} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -48,25 +48,32 @@ function initGame() {
                     const ship_length = parseInt(dragged.dataset.length)
                     const curr_row = parseInt(cell.dataset.row)
                     const curr_col = parseInt(cell.dataset.col)
+                    const positions =[]
                     if (dragged.classList.contains("horizontal")){
                         if (curr_col + ship_length <= 10) {
                             for (let col = curr_col; col < curr_col + ship_length; col++) {
+                                positions.push([curr_row, col])
                                 const cell_to_color = document.querySelector(`div[data-row="${curr_row}"][data-col="${col}"]`)
                                 cell_to_color.classList.add("occupied")
                             }
                             ships_element.removeChild(dragged)
+                            manualSetBoard(players[player1], ship_length, positions)
                         }
                     } else if (dragged.classList.contains("vertical")) {
                         if (curr_row + ship_length <= 10) {
                             for (let row = curr_row; row < curr_row + ship_length; row++) {
+                                positions.push([row, curr_col])
                                 const cell_to_color = document.querySelector(`div[data-row="${row}"][data-col="${curr_col}"]`)
                                 cell_to_color.classList.add("occupied")
                             }
                             ships_element.removeChild(dragged)
-                            if (!ships_element.children.length) {
-                                play_button.disabled = false
-                            }
+                            manualSetBoard(players[player1], ship_length, positions)
                         }
+                    }
+
+                    positions.length = 0
+                    if (!ships_element.children.length) {
+                        play_button.disabled = false
                     }
                 }
             })
