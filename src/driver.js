@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {updateBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement, populateBoardPlacer} from "./driver.helper";
+import {updateBoard, renderGrids, endGame, aiAttack, generateShips, fillShipsElement, populateBoardPlacer} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -161,13 +161,7 @@ function aiTurn() {
     }
 
     updateBoard(players[player2], BOARD)
-    if (!players[player2].gameboard.checkShipsLeft()) {
-        endGame(player1)
-        removeInteractivity()
-    } else {
-        player1 = player2
-        nextTurn()
-    }
+    endTurn()
 }
 
 function playerTurn() {
@@ -186,7 +180,19 @@ function cell_interactivity(event) {
     )
 
     updateBoard(players[player2], GUESS_BOARD)
+    endTurn()
+}
 
+function removeInteractivity() {
+    const guess_board_element = document.getElementById("guess-board")
+    const guess_cells = guess_board_element.querySelectorAll(".cell")
+    guess_cells.forEach(cell => {
+        cell.removeEventListener("click", cell_interactivity)
+    })
+}
+
+function endTurn() {
+    const player2 = ( player1 + 1 ) % 2
     if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
         removeInteractivity()
@@ -196,12 +202,20 @@ function cell_interactivity(event) {
     }
 }
 
-function removeInteractivity() {
-    const guess_board_element = document.getElementById("guess-board")
-    const guess_cells = guess_board_element.querySelectorAll(".cell")
-    guess_cells.forEach(cell => {
-        cell.removeEventListener("click", cell_interactivity)
+function cleanBoard(player) {
+    const cells = document.querySelectorAll("#board .cell")
+    cells.forEach(cell => {
+        cell.classList.remove("occupied")
+        cell.removeEventListener("dragover", allowDrop)
+        cell.removeEventListener("drop", dropLogic)
     })
+
+    const ships_elements = document.querySelectorAll(".ship")
+    ships_elements.forEach(ship_element => {
+        ship_element.removeEventListener("drag", dragLogic)
+    })
+
+    player.gameboard.board.forEach(list => list.fill(null))
 }
 
 const BOARD = 1

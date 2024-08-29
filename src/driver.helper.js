@@ -1,13 +1,5 @@
 import {Ship} from "./ship";
 
-export function cleanBoard(player) {
-    const occupied_cells = document.querySelectorAll(".occupied")
-    occupied_cells.forEach(cell => {
-        cell.classList.remove("occupied")
-    })
-    player.gameboard.board.forEach(list => list.fill(null))
-}
-
 export function generateShips(player) {
     ships_to_generate.forEach(([num_ships, length]) => {
         for (let i = 0; i < num_ships; i++) {
