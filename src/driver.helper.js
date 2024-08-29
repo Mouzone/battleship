@@ -115,7 +115,7 @@ export function updateGuessBoard(player) {
 }
 
 export function endGame(player_number) {
-    const end_game = document.getElementById("game-over")
+    const end_game = document.getElementById("modal")
     end_game.style.display = "block"
     if (player_number === 0) {
         end_game.textContent = "Player 1 has won!"
@@ -144,6 +144,7 @@ export function fillShipsElement() {
         4: "four"
     }
     const ships_element = document.getElementById("ships")
+    ships_element.style.display = "flex";
     ships_element.innerHTML = ""
     ships_to_generate.forEach(([num_ships, length]) => {
         for (let i = 0; i < num_ships; i++) {

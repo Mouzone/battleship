@@ -13,6 +13,19 @@ body {
     gap: 100px;
 }
 
+#modal {
+    position: absolute;
+    display: block;
+
+    align-self: center;
+    width: 200px;
+    height: 200px;
+    border: 5px solid black;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+}
+
 .container {
     height: 70%;
     display: flex;
@@ -123,17 +136,4 @@ body {
 
 .miss {
     background-color: gray;
-}
-
-#game-over {
-    position: absolute;
-    display: none;
-
-    align-self: center;
-    width: 200px;
-    height: 200px;
-    border: 5px solid black;
-    border-radius: 10px;
-    background-color: white;
-    text-align: center;
 }

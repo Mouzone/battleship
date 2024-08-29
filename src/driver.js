@@ -8,95 +8,119 @@ const REAL_PLAYER = 1
 let player1 = 0
 
 const players = [new Player(REAL_PLAYER), new Player(AI_PLAYER)]
+const ships_element = document.getElementById("ships")
+const randomize_button = document.getElementById("generate")
+const manual_gen_button = document.getElementById("manual-generate")
+const play_button = document.getElementById("play")
+let dragged = null
+
+function selectGameMode() {
+    const start_game = document.getElementById("modal")
+    const vs_ai_button = document.getElementById("vs-ai")
+    const vs_player_button = document.getElementById("vs-player")
+    vs_ai_button.addEventListener("click", event => {
+        players.push(new Player(AI_PLAYER))
+        start_game.style.display = "none"
+    })
+    vs_player_button.addEventListener("click", event => {
+        players.push(new Player(REAL_PLAYER))
+        start_game.style.display = "none"
+    })
+}
+
+function makeButtonsInteractive() {
+    randomize_button.addEventListener("click", makeRandButtonInteractive)
+    manual_gen_button.addEventListener("click", makeManGenButtonInteractive)
+    play_button.addEventListener("click", makePlayButtonInteractive)
+}
+
+function makeRandButtonInteractive(event) {
+    ships_element.style.display = "none";
+    cleanBoard(players[player1])
+    generateShips(players[player1])
+
+    updateBoard(players[ player1 ])
+    updateGuessBoard(players[ player1 + 1 % 2])
+    play_button.disabled = false
+}
+
+function makeManGenButtonInteractive(event){
+    fillShipsElement()
+    cleanBoard(players[player1])
+    const cells = document.querySelectorAll("#board .cell")
+    cells.forEach(cell => {
+        cell.addEventListener("dragover", allowDrop)
+        cell.addEventListener("drop", dropLogic)
+    })
+    const ships_elements = document.querySelectorAll(".ship")
+    ships_elements.forEach(ship_element => {
+        ship_element.addEventListener("drag", dragLogic)
+    })
+}
+
+function makePlayButtonInteractive(event) {
+    const guess_board = document.getElementById("guess-board")
+    randomize_button.disabled = true
+    manual_gen_button.disabled = true
+    play_button.disabled = true
+
+    guess_board.style.opacity = "1"
+    ships_element.style.display = "none"
+
+    nextTurn()
+}
+
+function allowDrop(event) {
+    // prevent default to allow drop
+    event.preventDefault();
+}
+
+function dropLogic(event){
+    const cell = event.currentTarget
+    if (cell.classList.contains("occupied")) {
+        return
+    }
+
+    const ship_length = parseInt(dragged.dataset.length)
+    const curr_row = parseInt(cell.dataset.row)
+    const curr_col = parseInt(cell.dataset.col)
+    const positions = []
+
+    const isHorizontal = dragged.classList.contains("horizontal");
+    const maxLimit = isHorizontal ? curr_col + ship_length : curr_row + ship_length;
+
+    // Check if the ship can be placed within the grid
+    if (maxLimit <= 10) {
+        for (let i = 0; i < ship_length; i++) {
+            const row = isHorizontal ? curr_row : curr_row + i
+            const col = isHorizontal ? curr_col + i : curr_col
+
+            positions.push([row, col])
+
+            const cell_to_color = document.querySelector(`div[data-row="${row}"][data-col="${col}"]`)
+            cell_to_color.classList.add("occupied")
+        }
+
+        ships_element.removeChild(dragged);
+        populateBoardPlacer(ship_length, positions, players[player1].gameboard.board)
+    }
+
+
+    if (!ships_element.children.length) {
+        play_button.disabled = false
+    }
+}
+
+function dragLogic(event) {
+    dragged = event.currentTarget
+}
 
 function initGame() {
     renderGrids()
+    // selectGameMode()
+
     generateShips(players[(player1+1) % 2])
-    const ships_element = document.getElementById("ships")
-
-    const randomize_button = document.getElementById("generate")
-    randomize_button.addEventListener("click", event => {
-        ships_element.style.display = "none";
-        cleanBoard(players[player1])
-        generateShips(players[player1])
-
-        updateBoard(players[ player1 ])
-        updateGuessBoard(players[ player1 + 1 % 2])
-        play_button.disabled = false
-    })
-
-    const manual_gen_button = document.getElementById("manual-generate")
-
-    manual_gen_button.addEventListener("click", event => {
-        fillShipsElement()
-        cleanBoard(players[player1])
-        let dragged = null
-        ships_element.style.display = "flex";
-        const cells = document.querySelectorAll("#board .cell")
-        cells.forEach(cell => {
-            cell.addEventListener("dragover", event => {
-                // prevent default to allow drop
-                event.preventDefault();
-            })
-            cell.addEventListener("click", event => {
-                if (cell.classList.contains("occupied")) {
-                    event.preventDefault()
-                }
-            })
-            cell.addEventListener("drop", event => {
-                if (!cell.classList.contains("occupied")) {
-                    const ship_length = parseInt(dragged.dataset.length)
-                    const curr_row = parseInt(cell.dataset.row)
-                    const curr_col = parseInt(cell.dataset.col)
-                    const positions =[]
-                    if (dragged.classList.contains("horizontal")){
-                        if (curr_col + ship_length <= 10) {
-                            for (let col = curr_col; col < curr_col + ship_length; col++) {
-                                positions.push([curr_row, col])
-                                const cell_to_color = document.querySelector(`div[data-row="${curr_row}"][data-col="${col}"]`)
-                                cell_to_color.classList.add("occupied")
-                            }
-                            ships_element.removeChild(dragged)
-                            populateBoardPlacer(ship_length, positions, players[player1].gameboard.board)
-                        }
-                    } else if (dragged.classList.contains("vertical")) {
-                        if (curr_row + ship_length <= 10) {
-                            for (let row = curr_row; row < curr_row + ship_length; row++) {
-                                positions.push([row, curr_col])
-                                const cell_to_color = document.querySelector(`div[data-row="${row}"][data-col="${curr_col}"]`)
-                                cell_to_color.classList.add("occupied")
-                            }
-                            ships_element.removeChild(dragged)
-                            populateBoardPlacer(ship_length, positions, players[player1].gameboard.board)
-                        }
-                    }
-
-                    positions.length = 0
-                    if (!ships_element.children.length) {
-                        play_button.disabled = false
-                    }
-                }
-            })
-        })
-
-        const ships_elements = document.querySelectorAll(".ship")
-        ships_elements.forEach(ship_element => {
-            ship_element.addEventListener("drag", event => {
-                dragged = ship_element
-            })
-        })
-    })
-
-    const play_button = document.getElementById("play")
-    play_button.addEventListener("click", event => {
-        const guess_board = document.getElementById("guess-board")
-        guess_board.style.opacity = "1"
-        randomize_button.disabled = true
-        manual_gen_button.disabled = true
-        play_button.disabled = true
-        ships_element.style.display = "none";
-        nextTurn()
-    })
+    makeButtonsInteractive()
 }
 
 function nextTurn() {
@@ -131,7 +155,6 @@ function aiTurn() {
                     !( seen.has( coords ) )) {
                     ai_attack_queue.push([ row + dx, col + dy ])
                     seen.add( coords )
-                    console.log( coords )
                 }
             }
         })
