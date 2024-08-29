@@ -15,7 +15,7 @@ body {
 
 #modal {
     position: absolute;
-    display: block;
+    display: none;
 
     align-self: center;
     width: 200px;

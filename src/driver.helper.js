@@ -75,41 +75,24 @@ export function renderGrids() {
 }
 
 
-export function updateBoard(player) {
+export function updateBoard(player, is_board_element) {
     const board = player.gameboard.board
+    const board_element_to_use = is_board_element ? board_element : guess_board_element
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
-            const cell = board_element.querySelector(`div[data-row="${i}"][data-col="${j}"]`)
-            if (board[i][j] instanceof Ship) {
+            const cell = board_element_to_use.querySelector(`div[data-row="${i}"][data-col="${j}"]`)
+            if (is_board_element && board[i][j] instanceof Ship) {
                 cell.classList.add("occupied")
             } else if (board[i][j] === 1) {
                 cell.classList.add("hit")
             }
         }
     }
-    player.gameboard.miss.forEach(coordinates => {
-        let x, y
-        [x, y] = coordinates.split(",")
-        const cell = board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
-        cell.classList.add("miss")
-    })
-}
-
-export function updateGuessBoard(player) {
-    const board = player.gameboard.board
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j++) {
-            const cell = guess_board_element.querySelector(`div[data-row="${i}"][data-col="${j}"]`)
-            if (board[i][j] === 1) {
-                cell.classList.add("hit")
-            }
-        }
-    }
 
     player.gameboard.miss.forEach(coordinates => {
         let x, y
         [x, y] = coordinates.split(",")
-        const cell = guess_board_element.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
+        const cell = board_element_to_use.querySelector(`div[data-row="${x}"][data-col="${y}"]`)
         cell.classList.add("miss")
     })
 }

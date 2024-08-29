@@ -1,5 +1,5 @@
 import {Player} from "./player";
-import {updateBoard, updateGuessBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement, populateBoardPlacer} from "./driver.helper";
+import {updateBoard, renderGrids, endGame, aiAttack, generateShips, cleanBoard, fillShipsElement, populateBoardPlacer} from "./driver.helper";
 import "./style.css"
 
 const AI_PLAYER = 0
@@ -39,8 +39,8 @@ function makeRandButtonInteractive(event) {
     cleanBoard(players[player1])
     generateShips(players[player1])
 
-    updateBoard(players[ player1 ])
-    updateGuessBoard(players[ player1 + 1 % 2])
+    updateBoard(players[ player1 ], BOARD)
+    updateBoard(players[ player1 + 1 % 2], GUESS_BOARD)
     play_button.disabled = false
 }
 
@@ -160,7 +160,7 @@ function aiTurn() {
         })
     }
 
-    updateBoard(players[player2])
+    updateBoard(players[player2], BOARD)
     if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
         removeInteractivity()
@@ -185,7 +185,7 @@ function cell_interactivity(event) {
         parseInt(event.currentTarget.dataset.col)
     )
 
-    updateGuessBoard(players[player2])
+    updateBoard(players[player2], GUESS_BOARD)
 
     if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
@@ -204,6 +204,8 @@ function removeInteractivity() {
     })
 }
 
+const BOARD = 1
+const GUESS_BOARD = 0
 const HIT = 1
 initGame()
 
