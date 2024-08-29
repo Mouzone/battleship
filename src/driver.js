@@ -108,11 +108,35 @@ function nextTurn() {
     }
 }
 
+const ai_attack_queue = []
+const seen = new Set()
+const directions = [ [1, 0], [0, 1], [-1, 0], [0, -1] ]
 function aiTurn() {
     const player2 = (player1 + 1) % 2
-    let row, col;
-    [row, col] = aiAttack(players[player2])
-    players[player2].gameboard.receiveAttack(row, col)
+
+    let row, col
+    if (ai_attack_queue.length) {
+        [row, col] = ai_attack_queue.pop()
+    } else {
+        [row, col] = aiAttack(players[ player2 ])
+        seen.add(`${row},${col}`)
+    }
+
+    if (players[player2].gameboard.receiveAttack(row, col)) {
+        directions.forEach(([dx, dy]) => {
+            if ( ( row + dx ) >= 0 && ( row + dx ) < 10 && ( col + dy ) >= 0 && ( col + dy ) < 10 ) {
+                const coords = `${ row + dx },${ col + dy }`
+                if (( players[ player2 ].gameboard.board[ row + dx ][ col + dy ] !== HIT ) &&
+                    !( players[ player2 ].gameboard.miss.has( coords ) ) &&
+                    !( seen.has( coords ) )) {
+                    ai_attack_queue.push([ row + dx, col + dy ])
+                    seen.add( coords )
+                    console.log( coords )
+                }
+            }
+        })
+    }
+
     updateBoard(players[player2])
     if (!players[player2].gameboard.checkShipsLeft()) {
         endGame(player1)
@@ -157,6 +181,7 @@ function removeInteractivity() {
     })
 }
 
+const HIT = 1
 initGame()
 
 
