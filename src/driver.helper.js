@@ -129,6 +129,7 @@ export function fillShipsElement() {
     const ships_element = document.getElementById("ships")
     ships_element.style.display = "flex";
     ships_element.innerHTML = ""
+
     ships_to_generate.forEach(([num_ships, length]) => {
         for (let i = 0; i < num_ships; i++) {
             const ship_element = document.createElement("div")
@@ -141,11 +142,9 @@ export function fillShipsElement() {
             ship_element.draggable = true
             ships_element.appendChild(ship_element)
             ship_element.addEventListener("click", event => {
-                if (ship_element.classList.contains("horizontal")) {
-                    ship_element.classList.replace("horizontal", "vertical")
-                } else {
-                    ship_element.classList.replace("vertical", "horizontal")
-                }
+                const isHorizontal = ship_element.classList.contains("horizontal");
+                ship_element.classList.toggle("horizontal", !isHorizontal);
+                ship_element.classList.toggle("vertical", isHorizontal);
             })
         }
     })
