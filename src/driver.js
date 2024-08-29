@@ -223,4 +223,4 @@ const GUESS_BOARD = 0
 const HIT = 1
 initGame()
 
-
+// todo: player vs player gamemode
